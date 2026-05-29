@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readify AI - Smart PDF Audiobook Generator</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="logo">
+                <i class="fa-solid fa-book-open-reader logo-icon"></i>
+                <span>Readify AI</span>
+            </div>
+            <h1 class="main-title">Convert PDFs into intelligent audiobooks <span class="text-highlight">instantly</span></h1>
+            <p class="subtitle">Experience your documents in a new way with our premium AI voice generation.</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Card -->
+            <section class="card upload-card" id="upload-section">
+                <form id="upload-form" enctype="multipart/form-data">
+                    <div class="drag-drop-area" id="drop-area">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <h3>Drag & Drop your PDF here</h3>
+                        <p>or</p>
+                        <label for="file-input" class="btn btn-secondary">Browse Files</label>
+                        <input type="file" id="file-input" name="pdf_file" accept="application/pdf" hidden>
+                        <p class="file-name-display" id="file-name"></p>
+                    </div>
+
+                    <div class="settings-area">
+                        <div class="setting-group">
+                            <label for="language-select"><i class="fa-solid fa-language"></i> Select Language</label>
+                            <select id="language-select" name="lang" class="custom-select">
+                                <option value="en" selected>English</option>
+                                <option value="ml">Malayalam</option>
+                                <option value="hi">Hindi</option>
+                                <option value="ta">Tamil</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" id="generate-btn" disabled>
+                        <span>Generate Audiobook</span>
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Processing / Status Section -->
+            <section class="card status-card hidden" id="status-section">
+                <div class="loader-container">
+                    <div class="glow-spinner"></div>
+                </div>
+                <h3 id="status-title">Processing PDF...</h3>
+                <p id="status-message" class="status-desc">Extracting text and analyzing document</p>
+                
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <span class="stat-label">Pages</span>
+                        <span class="stat-value" id="stat-pages">-</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Characters</span>
+                        <span class="stat-value" id="stat-chars">-</span>
+                    </div>
+                </div>
+
+                <!-- Warning Message for Large PDFs -->
+                <div id="large-file-warning" class="warning-alert hidden">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div>
+                        <strong>Large Document Detected</strong>
+                        <p>This PDF has many pages. Audio generation will take some time, but you can leave this tab open.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Result Section -->
+            <section class="card result-card hidden" id="result-section">
+                <div class="success-header">
+                    <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+                    <h3>Audiobook Ready</h3>
+                </div>
+                
+                <div class="audio-player-wrapper">
+                    <audio id="audio-player" controls class="custom-audio">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+
+                <div class="action-buttons">
+                    <a id="download-btn" href="#" class="btn btn-primary">
+                        <i class="fa-solid fa-download"></i> Download MP3
+                    </a>
+                    <button id="reset-btn" class="btn btn-secondary">
+                        <i class="fa-solid fa-rotate-left"></i> Convert Another
+                    </button>
+                </div>
+            </section>
+            
+            <!-- Error Alert -->
+            <div id="error-alert" class="error-alert hidden">
+                <i class="fa-solid fa-circle-xmark"></i>
+                <span id="error-message">An error occurred.</span>
+                <button class="close-error" id="close-error">&times;</button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 Readify AI. Powered by Flask & gTTS.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
