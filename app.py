@@ -1,7 +1,8 @@
 import os
 import uuid
 import threading
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from datetime import datetime
+from flask import Flask, request, jsonify, render_template, send_from_directory, abort
 from werkzeug.utils import secure_filename
 from PyPDF2 import PdfReader
 from gtts import gTTS
@@ -88,7 +89,10 @@ def upload_file():
             jobs[job_id] = {
                 'status': 'processing',
                 'pages': num_pages,
-                'char_count': len(text)
+                'char_count': len(text),
+                'original_filename': filename,
+                'lang': lang,
+                'created_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
             
             # Start background thread for audio generation
@@ -117,6 +121,32 @@ def check_status(job_id):
 @app.route('/audio/<filename>', methods=['GET'])
 def get_audio(filename):
     return send_from_directory(app.config['AUDIO_FOLDER'], filename, as_attachment=False)
+
+@app.route('/player/<audio_filename>', methods=['GET'])
+def player(audio_filename):
+    # Find the job with this audio_filename
+    job_data = None
+    for jid, data in jobs.items():
+        if data.get('audio_filename') == audio_filename:
+            job_data = data
+            break
+            
+    if not job_data:
+        # If not found in memory (e.g. server restarted), we can still serve the player with basic info
+        if os.path.exists(os.path.join(app.config['AUDIO_FOLDER'], audio_filename)):
+            job_data = {
+                'audio_filename': audio_filename,
+                'audio_url': f"/audio/{audio_filename}",
+                'original_filename': "Unknown PDF",
+                'pages': "Unknown",
+                'char_count': "Unknown",
+                'lang': "Unknown",
+                'created_date': "Unknown"
+            }
+        else:
+            abort(404)
+            
+    return render_template('player.html', job=job_data)
 
 @app.route('/download/<filename>', methods=['GET'])
 def download_audio(filename):

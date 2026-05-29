@@ -155,17 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000); // Poll every 3 seconds
     }
 
-    // Show Success Result
+    // Show Success Result and Redirect
     function showSuccess(data) {
-        statusSection.classList.add('hidden');
-        resultSection.classList.remove('hidden');
-
-        // Setup audio player
-        audioPlayer.src = data.audio_url;
-        audioPlayer.load();
-        
-        // Setup download button
-        downloadBtn.href = `/download/${data.audio_filename}`;
+        window.location.href = `/player/${data.audio_filename}`;
     }
 
     // Handle Errors
