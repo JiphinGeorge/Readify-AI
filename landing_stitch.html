@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Readify AI - Transform PDFs into Audiobooks</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#e9ddff",
+                      "surface-tint": "#6d3bd7",
+                      "background": "#f7f9fb",
+                      "surface-container-low": "#f2f4f6",
+                      "tertiary-fixed-dim": "#ffb783",
+                      "on-primary": "#ffffff",
+                      "secondary": "#006591",
+                      "on-secondary-fixed-variant": "#004c6e",
+                      "surface-dim": "#d8dadc",
+                      "on-tertiary-container": "#fffbff",
+                      "on-primary-fixed-variant": "#5516be",
+                      "on-tertiary-fixed": "#301400",
+                      "error-container": "#ffdad6",
+                      "on-error": "#ffffff",
+                      "surface": "#f7f9fb",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#8455ef",
+                      "on-background": "#191c1e",
+                      "on-error-container": "#93000a",
+                      "surface-container": "#eceef0",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed": "#23005c",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#fffbff",
+                      "tertiary-container": "#b55d00",
+                      "outline-variant": "#cbc3d7",
+                      "surface-container-high": "#e6e8ea",
+                      "primary-fixed-dim": "#d0bcff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#004666",
+                      "on-tertiary-fixed-variant": "#713700",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-secondary-fixed": "#001e2f",
+                      "tertiary-fixed": "#ffdcc5",
+                      "surface-variant": "#e0e3e5",
+                      "outline": "#7b7486",
+                      "secondary-fixed": "#c9e6ff",
+                      "on-surface-variant": "#494454",
+                      "secondary-container": "#39b8fd",
+                      "inverse-surface": "#2d3133",
+                      "secondary-fixed-dim": "#89ceff",
+                      "primary": "#6b38d4",
+                      "surface-container-highest": "#e0e3e5",
+                      "tertiary": "#904800",
+                      "on-surface": "#191c1e",
+                      "inverse-primary": "#d0bcff",
+                      "surface-bright": "#f7f9fb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1200px",
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "margin-desktop": "40px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              },
+              animation: {
+                'blob': 'blob 10s infinite',
+                'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                'slide-up': 'slide-up 0.5s ease-out forwards',
+                'icon-pulse': 'icon-pulse 3s ease-in-out infinite',
+                'border-glow': 'border-glow 6s linear infinite',
+              },
+              keyframes: {
+                blob: {
+                  '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                  '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                  '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                  '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                },
+                'pulse-glow': {
+                  '0%, 100%': { opacity: '1' },
+                  '50%': { opacity: '.5' },
+                },
+                'slide-up': {
+                  '0%': { opacity: '0', transform: 'translateY(20px)' },
+                  '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                'icon-pulse': {
+                  '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                  '50%': { transform: 'scale(1.15)', opacity: '0.8' },
+                },
+                'border-glow': {
+                  '0%': { backgroundPosition: '0% 50%' },
+                  '50%': { backgroundPosition: '100% 50%' },
+                  '100%': { backgroundPosition: '0% 50%' },
+                }
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+        
+        body {
+            background-color: theme('colors.background');
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-bg {
+            background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+        }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
+        .glass-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-shimmer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            transition: all 0.7s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .glass-shimmer:hover::before {
+            left: 150%;
+        }
+
+        .animated-border-glow {
+            position: absolute;
+            inset: -2px;
+            z-index: -1;
+            border-radius: inherit;
+            background: linear-gradient(90deg, theme('colors.primary'), theme('colors.secondary-container'), theme('colors.tertiary'), theme('colors.primary'));
+            background-size: 300% 300%;
+            animation: border-glow 8s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            filter: blur(8px);
+        }
+        .group:hover .animated-border-glow {
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="text-on-background font-body-md overflow-x-hidden min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-white/70 backdrop-blur-xl fixed top-0 left-0 w-full z-50 border-b border-white/20 shadow-sm shadow-primary/5">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20">
+<div class="text-headline-md font-headline-md font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-container to-secondary-container">
+                Readify AI
+            </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:scale-105 hover:opacity-80 transition-all duration-300" href="#">Features</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:scale-105 hover:opacity-80 transition-all duration-300" href="#">How it Works</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:scale-105 hover:opacity-80 transition-all duration-300" href="#">Pricing</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:scale-105 hover:opacity-80 transition-all duration-300" href="#">Community</a>
+</div>
+<button class="font-label-sm text-label-sm bg-primary text-on-primary px-6 py-3 rounded-full hover:-translate-y-0.5 hover:opacity-90 transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(107,56,212,0.3)] hover:shadow-[0_15px_40px_-10px_rgba(107,56,212,0.5)]">
+                Get Started
+            </button>
+</div>
+</nav>
+<main class="flex-grow pt-28">
+<!-- Hero Section -->
+<section class="relative pt-20 pb-32 overflow-hidden hero-bg">
+<!-- Decorative Blobs -->
+<div class="absolute top-0 -left-4 w-72 h-72 bg-primary-fixed rounded-full mix-blend-multiply filter blur-2xl opacity-40 animate-blob"></div>
+<div class="absolute top-0 -right-4 w-72 h-72 bg-secondary-fixed rounded-full mix-blend-multiply filter blur-2xl opacity-40 animate-blob animation-delay-2000"></div>
+<div class="absolute -bottom-8 left-20 w-72 h-72 bg-tertiary-fixed rounded-full mix-blend-multiply filter blur-2xl opacity-40 animate-blob animation-delay-4000"></div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-center">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-6 max-w-4xl mx-auto">
+                    Transform PDFs into immersive <span class="bg-gradient-to-r from-primary to-secondary-container gradient-text">audiobooks instantly.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    Experience your documents like never before with high-fidelity AI voices, smart text extraction, and seamless playback.
+                </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary font-label-sm text-label-sm px-8 py-4 rounded-full shadow-[0_10px_30px_-10px_rgba(107,56,212,0.4)] hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_rgba(107,56,212,0.6)] transition-all duration-300 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+                        Upload PDF
+                    </button>
+<button class="bg-transparent border border-outline-variant text-primary font-label-sm text-label-sm px-8 py-4 rounded-full hover:bg-surface-container-low hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_rgba(107,56,212,0.2)] transition-all duration-300 flex items-center justify-center gap-2 glass-card">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+                        Generate Audiobook
+                    </button>
+</div>
+</div>
+</section>
+<!-- Upload Section -->
+<section class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop -mt-16 relative z-20 pb-32">
+<div class="relative group rounded-xl">
+<div class="animated-border-glow"></div>
+<div class="glass-card rounded-xl p-12 text-center border-2 border-dashed border-primary-fixed-dim hover:border-primary transition-colors cursor-pointer relative overflow-hidden glass-shimmer">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-primary-fixed/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<span class="material-symbols-outlined text-display-lg text-primary mb-4 group-hover:text-surface-tint transition-colors duration-500 animate-icon-pulse inline-block" data-icon="cloud_upload">cloud_upload</span>
+<h3 class="font-headline-md text-headline-md mb-2 relative z-10">Drag &amp; Drop your PDF</h3>
+<p class="font-body-md text-body-md text-on-surface-variant relative z-10">or click to browse files (Max 50MB)</p>
+<!-- Mock Progress Bar (Hidden by default) -->
+<div class="mt-8 hidden relative z-10">
+<div class="w-full bg-surface-variant rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-2 rounded-full w-3/4 animate-pulse-glow"></div>
+</div>
+<p class="font-label-sm text-label-sm text-primary mt-2">Processing document... 75%</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest w-full py-12 bg-gradient-to-t from-surface-container-low/50 to-transparent flat opacity-100 hover:opacity-80 transition-opacity mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto px-margin-desktop gap-8">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">
+                Readify AI
+            </div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+<div class="font-body-md text-body-md text-on-surface-variant/80">
+                © 2024 Readify AI. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>
