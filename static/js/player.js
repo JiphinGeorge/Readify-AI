@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // --- Native Audio Integration ---
+    // --- Audio Elements ---
     var audio = document.getElementById('native-audio');
     var playPauseBtn = document.getElementById('play-pause-btn');
     var playIcon = document.getElementById('play-icon');
@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var speedBtn = document.getElementById('speed-btn');
     var muteBtn = document.getElementById('mute-btn');
     var volumeIcon = document.getElementById('volume-icon');
-
     var slider = document.getElementById('progress-bar');
     var currentTimeEl = document.getElementById('current-time');
     var totalTimeEl = document.getElementById('total-time');
@@ -21,49 +20,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
     formatNumbers();
 
-    // Log audio src for debugging
-    console.log('Audio element src:', audio.src);
-    console.log('Audio readyState:', audio.readyState);
+    console.log('[Readify] Audio src:', audio.src);
+    console.log('[Readify] Audio readyState:', audio.readyState);
 
+    // --- Duration ---
     function setTotalTime() {
         if (audio.duration && !isNaN(audio.duration)) {
             totalTimeEl.textContent = formatTime(audio.duration);
+            console.log('[Readify] Duration set:', audio.duration);
         }
     }
 
     if (audio.readyState >= 1) {
         setTotalTime();
     }
-
     audio.addEventListener('loadedmetadata', setTotalTime);
+    audio.addEventListener('durationchange', setTotalTime);
 
+    // --- Time Update ---
     audio.addEventListener('timeupdate', function() {
         if (!audio.duration) return;
         var percent = (audio.currentTime / audio.duration) * 100;
         slider.value = percent;
-        slider.style.background = 'linear-gradient(to right, #6b38d4 ' + percent + '%, #e0e3e5 ' + percent + '%)';
+        slider.style.background = 'linear-gradient(to right, #7C3AED ' + percent + '%, rgba(255,255,255,0.1) ' + percent + '%)';
         currentTimeEl.textContent = formatTime(audio.currentTime);
     });
 
+    // --- Ended ---
     audio.addEventListener('ended', function() {
         isPlaying = false;
         updatePlayIcon();
         toggleWaves(false);
         slider.value = 0;
-        slider.style.background = 'linear-gradient(to right, #6b38d4 0%, #e0e3e5 0%)';
+        slider.style.background = 'linear-gradient(to right, #7C3AED 0%, rgba(255,255,255,0.1) 0%)';
         audio.currentTime = 0;
     });
 
-    audio.addEventListener('error', function(e) {
-        console.error('Audio error:', audio.error);
-        var msg = 'Unable to load audio file.';
-        if (audio.error) {
-            msg += ' Error: ' + audio.error.message;
-        }
-        showError(msg);
+    // --- Error ---
+    audio.addEventListener('error', function() {
+        console.error('[Readify] Audio error:', audio.error);
+        showError('Unable to load audio file.');
     });
 
-    // Sync play state from actual audio events
+    // --- State Sync ---
     audio.addEventListener('play', function() {
         isPlaying = true;
         updatePlayIcon();
@@ -76,16 +75,18 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleWaves(false);
     });
 
-    // Seek slider input
+    // --- Seek ---
     slider.addEventListener('input', function() {
         var percent = this.value;
-        this.style.background = 'linear-gradient(to right, #6b38d4 ' + percent + '%, #e0e3e5 ' + percent + '%)';
-        audio.currentTime = (percent / 100) * audio.duration;
+        this.style.background = 'linear-gradient(to right, #7C3AED ' + percent + '%, rgba(255,255,255,0.1) ' + percent + '%)';
+        if (audio.duration) {
+            audio.currentTime = (percent / 100) * audio.duration;
+        }
     });
 
-    // Play/Pause toggle
+    // --- Play/Pause ---
     playPauseBtn.addEventListener('click', function() {
-        console.log('Play button clicked. audio.src:', audio.src, '| readyState:', audio.readyState);
+        console.log('[Readify] Play clicked. src:', audio.src, 'readyState:', audio.readyState);
         if (!audio.src || audio.src === '' || audio.src === window.location.href) {
             showError('Audio source is missing.');
             return;
@@ -94,20 +95,24 @@ document.addEventListener('DOMContentLoaded', function() {
             audio.pause();
         } else {
             audio.play().catch(function(e) {
-                console.error('Playback error:', e);
+                console.error('[Readify] Playback error:', e);
                 showError('Playback failed: ' + e.message);
             });
         }
     });
 
+    // --- Rewind/Forward ---
     rewindBtn.addEventListener('click', function() {
         audio.currentTime = Math.max(0, audio.currentTime - 10);
     });
 
     forwardBtn.addEventListener('click', function() {
-        audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+        if (audio.duration) {
+            audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+        }
     });
 
+    // --- Speed ---
     speedBtn.addEventListener('click', function() {
         currentRateIdx = (currentRateIdx + 1) % playbackRates.length;
         var newRate = playbackRates[currentRateIdx];
@@ -115,15 +120,15 @@ document.addEventListener('DOMContentLoaded', function() {
         speedBtn.textContent = newRate + 'x';
     });
 
+    // --- Mute ---
     muteBtn.addEventListener('click', function() {
         audio.muted = !audio.muted;
         volumeIcon.textContent = audio.muted ? 'volume_off' : 'volume_up';
     });
 
+    // --- Helpers ---
     function updatePlayIcon() {
         playIcon.textContent = isPlaying ? 'pause' : 'play_arrow';
-        playIcon.style.color = '#fff';
-        playIcon.style.fontVariationSettings = "'FILL' 1";
         if (isPlaying) {
             playPauseBtn.style.animation = 'none';
         } else {
@@ -148,18 +153,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function showError(msg) {
         document.getElementById('error-message').textContent = msg;
         errorAlert.classList.remove('hidden');
-        setTimeout(function() {
-            errorAlert.classList.add('hidden');
-        }, 5000);
+        setTimeout(function() { errorAlert.classList.add('hidden'); }, 5000);
     }
 
     closeError.addEventListener('click', function() {
         errorAlert.classList.add('hidden');
     });
 
-    // --- Stitch Visualizer Generators ---
+    // --- Waveform Visualizer ---
     var waveformContainer = document.getElementById('waveform');
-    var barCount = 40;
+    var barCount = 50;
     var waveElements = [];
 
     for (var i = 0; i < barCount; i++) {
@@ -167,17 +170,20 @@ document.addEventListener('DOMContentLoaded', function() {
         var height = Math.random() * 80 + 20;
         bar.style.height = height + '%';
         bar.style.transformOrigin = 'bottom';
+        bar.style.flex = '1';
+        bar.style.borderRadius = '2px 2px 0 0';
+        bar.style.transition = 'background 0.3s';
 
-        var duration = 0.5 + Math.random() * 0.8;
+        var duration = 0.4 + Math.random() * 0.8;
         var delay = Math.random() * -2;
-
         bar.dataset.animation = 'waveform-bounce ' + duration + 's infinite ease-in-out ' + delay + 's';
         bar.style.animation = 'none';
 
-        bar.className = 'w-full rounded-t-sm bg-gradient-to-t from-primary/20 to-primary/60 transition-colors duration-300';
-
         if (i < barCount * 0.4) {
-            bar.className = 'w-full rounded-t-sm bg-gradient-to-t from-primary to-secondary-container transition-colors duration-300 shadow-[0_0_8px_rgba(107,56,212,0.5)]';
+            bar.style.background = 'linear-gradient(to top, #7C3AED, #06B6D4)';
+            bar.style.boxShadow = '0 0 6px rgba(124, 58, 237, 0.4)';
+        } else {
+            bar.style.background = 'linear-gradient(to top, rgba(124,58,237,0.2), rgba(124,58,237,0.5))';
         }
 
         waveElements.push(bar);
@@ -188,27 +194,5 @@ document.addEventListener('DOMContentLoaded', function() {
         for (var j = 0; j < waveElements.length; j++) {
             waveElements[j].style.animation = active ? waveElements[j].dataset.animation : 'none';
         }
-    }
-
-    // Particle generator
-    var particlesContainer = document.getElementById('particles-container');
-    var particleColors = ['text-primary-fixed', 'text-secondary-fixed', 'text-tertiary-fixed'];
-    var particleCount = 20;
-
-    for (var k = 0; k < particleCount; k++) {
-        var particle = document.createElement('div');
-        var size = Math.random() * 6 + 2;
-        var left = Math.random() * 100;
-        var animDuration = 15 + Math.random() * 20;
-        var animDelay = Math.random() * -30;
-        var colorClass = particleColors[Math.floor(Math.random() * particleColors.length)];
-
-        particle.className = 'particle ' + colorClass;
-        particle.style.width = size + 'px';
-        particle.style.height = size + 'px';
-        particle.style.left = left + '%';
-        particle.style.animation = 'particle-drift ' + animDuration + 's infinite linear ' + animDelay + 's';
-
-        particlesContainer.appendChild(particle);
     }
 });
