@@ -50,9 +50,27 @@ document.addEventListener('DOMContentLoaded', () => {
         audio.currentTime = 0;
     });
 
-    audio.addEventListener('error', () => {
-        showError("Unable to load audio file.");
+    audio.addEventListener('error', (e) => {
+        console.error('Audio error:', audio.error);
+        showError('Unable to load audio file. Error: ' + (audio.error ? audio.error.message : 'unknown'));
     });
+
+    // Sync play state from actual audio events
+    audio.addEventListener('play', () => {
+        isPlaying = true;
+        updatePlayIcon();
+        toggleWaves(true);
+    });
+
+    audio.addEventListener('pause', () => {
+        isPlaying = false;
+        updatePlayIcon();
+        toggleWaves(false);
+    });
+
+    // Log audio src for debugging
+    console.log('Audio element src:', audio.src);
+    console.log('Audio readyState:', audio.readyState);
 
     // Seek slider input
     slider.addEventListener('input', function() {
@@ -62,20 +80,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     playPauseBtn.addEventListener('click', () => {
-        if (!audio.src || audio.src.endsWith('None')) {
-            showError("Audio source is invalid.");
+        console.log('Play button clicked. audio.src:', audio.src, '| readyState:', audio.readyState);
+        if (!audio.src || audio.src === '' || audio.src === window.location.href) {
+            showError('Audio source is missing.');
             return;
         }
         if (isPlaying) {
             audio.pause();
         } else {
             audio.play().catch(e => {
-                showError("Playback blocked. Please try again.");
+                console.error('Playback error:', e);
+                showError('Playback failed: ' + e.message);
             });
         }
-        isPlaying = !isPlaying;
-        updatePlayIcon();
-        toggleWaves(isPlaying);
     });
 
     rewindBtn.addEventListener('click', () => {
@@ -100,8 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updatePlayIcon() {
         playIcon.textContent = isPlaying ? 'pause' : 'play_arrow';
+        // Keep inline styles intact — only toggle animation
+        playIcon.style.color = '#fff';
+        playIcon.style.fontVariationSettings = "'FILL' 1";
         if (isPlaying) {
-            playPauseBtn.style.animation = 'none'; // Stop pulse when playing
+            playPauseBtn.style.animation = 'none';
         } else {
             playPauseBtn.style.animation = 'play-pulse 2s infinite';
         }
