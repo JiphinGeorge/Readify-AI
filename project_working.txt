@@ -1,0 +1,51 @@
+Project: Readify AI - Working Document
+========================================
+
+Architecture Overview:
+Readify AI is a Flask-based web application. It uses a client-server architecture where the frontend handles user interactions and file uploads, and the backend handles document processing and audio generation.
+
+Workflow:
+1. User Access: The user navigates to the main page (`/`), which serves `index.html`.
+2. File Upload: 
+   - The user selects or drags and drops a PDF file (max 50MB) and selects a target language.
+   - The frontend (`script.js`) validates the file type and size.
+   - Upon submission, a POST request is sent to the `/upload` endpoint with the PDF file and language selection.
+3. Backend Processing (Upload):
+   - The Flask app generates a unique job ID (UUID) and saves the PDF to the `uploads/` folder.
+   - It uses `PyPDF2` to extract text from the PDF.
+   - A job entry is created in an in-memory dictionary to track status.
+   - A background thread is started to generate the audio (`generate_audio_task`).
+   - The server responds with the job ID and initial stats (page count, char count).
+4. Background Audio Generation:
+   - The background thread uses `gTTS` to convert the extracted text into an MP3 file.
+   - The audio is saved to the `audio/` folder.
+   - The job status in memory is updated to 'completed' or 'error'.
+5. Polling for Status:
+   - The frontend periodically polls the `/status/<job_id>` endpoint to check the progress.
+   - Once the status is 'completed', the frontend redirects the user to the player page.
+6. Audio Playback:
+   - The `/player/<audio_filename>` endpoint serves `player.html`.
+   - The frontend (`player.js`) loads the generated MP3 from the `/audio/<filename>` endpoint.
+   - Users can play, pause, seek, adjust speed, and download the audio.
+
+Key Components:
+- `app.py`: Main Flask application, routing, and background task logic.
+- `requirements.txt`: Python dependencies (Flask, PyPDF2, gTTS, Werkzeug).
+- `templates/`: HTML templates (`index.html`, `player.html`).
+- `static/`: Static assets (CSS, JS, images).
+  - `script.js`: Handles upload form, drag-and-drop, and status polling.
+  - `player.js`: Handles audio player controls and waveform visualization.
+  - `style.css` / `player.css`: Premium dark theme styling.
+- `test_app.py`: Simple test script to verify server upload and polling.
+
+Data Storage:
+- Uploaded PDFs are temporarily stored in the `uploads/` directory.
+- Generated MP3 files are stored in the `audio/` directory.
+- Job status is currently stored in memory (dictionary) and will be lost on server restart.
+
+Future Enhancements:
+- Persistent database for job tracking.
+- Support for more document formats (Word, TXT).
+- Integration with more advanced TTS engines (e.g., ElevenLabs, AWS Polly) for more natural voices.
+- User accounts and history.
+- Celery/Redis for robust background task management instead of simple threading.
