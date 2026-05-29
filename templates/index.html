@@ -1,244 +1,150 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Readify AI - Transform PDFs into Audiobooks</title>
-    <script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "primary-fixed": "#e9ddff",
-                      "surface-tint": "#6d3bd7",
-                      "background": "#f7f9fb",
-                      "surface-container-low": "#f2f4f6",
-                      "tertiary-fixed-dim": "#ffb783",
-                      "on-primary": "#ffffff",
-                      "secondary": "#006591",
-                      "on-secondary-fixed-variant": "#004c6e",
-                      "surface-dim": "#d8dadc",
-                      "on-tertiary-container": "#fffbff",
-                      "on-primary-fixed-variant": "#5516be",
-                      "on-tertiary-fixed": "#301400",
-                      "error-container": "#ffdad6",
-                      "on-error": "#ffffff",
-                      "surface": "#f7f9fb",
-                      "surface-container-lowest": "#ffffff",
-                      "primary-container": "#8455ef",
-                      "on-background": "#191c1e",
-                      "on-error-container": "#93000a",
-                      "surface-container": "#eceef0",
-                      "error": "#ba1a1a",
-                      "on-primary-fixed": "#23005c",
-                      "on-secondary": "#ffffff",
-                      "on-primary-container": "#fffbff",
-                      "tertiary-container": "#b55d00",
-                      "outline-variant": "#cbc3d7",
-                      "surface-container-high": "#e6e8ea",
-                      "primary-fixed-dim": "#d0bcff",
-                      "on-tertiary": "#ffffff",
-                      "on-secondary-container": "#004666",
-                      "on-tertiary-fixed-variant": "#713700",
-                      "inverse-on-surface": "#eff1f3",
-                      "on-secondary-fixed": "#001e2f",
-                      "tertiary-fixed": "#ffdcc5",
-                      "surface-variant": "#e0e3e5",
-                      "outline": "#7b7486",
-                      "secondary-fixed": "#c9e6ff",
-                      "on-surface-variant": "#494454",
-                      "secondary-container": "#39b8fd",
-                      "inverse-surface": "#2d3133",
-                      "secondary-fixed-dim": "#89ceff",
-                      "primary": "#6b38d4",
-                      "surface-container-highest": "#e0e3e5",
-                      "tertiary": "#904800",
-                      "on-surface": "#191c1e",
-                      "inverse-primary": "#d0bcff",
-                      "surface-bright": "#f7f9fb"
-              },
-              "borderRadius": {
-                      "DEFAULT": "1rem",
-                      "lg": "2rem",
-                      "xl": "3rem",
-                      "full": "9999px"
-              },
-              "spacing": {
-                      "container-max": "1200px",
-                      "base": "8px",
-                      "margin-mobile": "16px",
-                      "gutter": "24px",
-                      "margin-desktop": "40px"
-              },
-              "fontFamily": {
-                      "headline-md": ["Plus Jakarta Sans"],
-                      "label-sm": ["Inter"],
-                      "display-lg-mobile": ["Plus Jakarta Sans"],
-                      "body-lg": ["Plus Jakarta Sans"],
-                      "display-lg": ["Plus Jakarta Sans"],
-                      "body-md": ["Plus Jakarta Sans"]
-              },
-              "fontSize": {
-                      "label-sm": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
-                      "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                      "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
-              },
-              animation: {
-                'blob': 'blob 10s infinite',
-                'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                'slide-up': 'slide-up 0.5s ease-out forwards',
-                'icon-pulse': 'icon-pulse 3s ease-in-out infinite',
-              },
-              keyframes: {
-                blob: {
-                  '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                  '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                  '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                  '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                },
-                'pulse-glow': {
-                  '0%, 100%': { opacity: '1' },
-                  '50%': { opacity: '.5' },
-                },
-                'icon-pulse': {
-                  '0%, 100%': { transform: 'scale(1)', opacity: '1' },
-                  '50%': { transform: 'scale(1.15)', opacity: '0.8' },
-                }
-              }
-            }
-          }
-        }
-    </script>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@600&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <!-- FontAwesome for fallback/extra icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS (Contains Tailwind Config and custom animations) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="text-on-background font-body-md overflow-x-hidden min-h-screen flex flex-col">
-    <!-- TopNavBar -->
-    <nav class="bg-white/70 backdrop-blur-xl fixed top-0 left-0 w-full z-50 border-b border-white/20 shadow-sm shadow-primary/5">
-        <div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20">
-            <div class="text-headline-md font-headline-md font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-container to-secondary-container">
-                Readify AI
+<body>
+    <!-- Animated Background -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Readify AI" class="nav-logo">
+                <span class="nav-title">Readify AI</span>
             </div>
-            <!-- Removed unused buttons here -->
         </div>
     </nav>
-    
-    <main class="flex-grow pt-28">
-        <!-- Error Alert -->
-        <div id="error-alert" class="hidden fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-error-container text-on-error-container px-6 py-3 rounded-full shadow-lg flex items-center gap-3 transition-opacity">
-            <span class="material-symbols-outlined text-[20px]">error</span>
-            <span id="error-message" class="font-label-sm">An error occurred</span>
-            <button id="close-error" class="ml-2 hover:opacity-70"><span class="material-symbols-outlined text-[16px]">close</span></button>
-        </div>
 
+    <!-- Error Alert -->
+    <div id="error-alert" class="error-alert hidden">
+        <span class="material-symbols-outlined" style="font-size:18px;">error</span>
+        <span id="error-message">An error occurred</span>
+        <button id="close-error" class="error-close"><span class="material-symbols-outlined" style="font-size:16px;">close</span></button>
+    </div>
+
+    <main class="main-content">
         <form id="upload-form" enctype="multipart/form-data">
             <!-- Hero Section -->
-            <section class="relative pt-20 pb-32 overflow-hidden hero-bg">
-                <!-- Decorative Blobs -->
-                <div class="absolute top-0 -left-4 w-72 h-72 bg-primary-fixed rounded-full mix-blend-multiply filter blur-2xl opacity-40 animate-blob"></div>
-                <div class="absolute top-0 -right-4 w-72 h-72 bg-secondary-fixed rounded-full mix-blend-multiply filter blur-2xl opacity-40 animate-blob animation-delay-2000"></div>
-                <div class="absolute -bottom-8 left-20 w-72 h-72 bg-tertiary-fixed rounded-full mix-blend-multiply filter blur-2xl opacity-40 animate-blob animation-delay-4000"></div>
-                
-                <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-center">
-                    <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-6 max-w-4xl mx-auto">
-                        Transform PDFs into immersive <span class="bg-gradient-to-r from-primary to-secondary-container gradient-text">audiobooks instantly.</span>
-                    </h1>
-                    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
-                        Experience your documents like never before with high-fidelity AI voices, smart text extraction, and seamless playback.
-                    </p>
-                    
-                    <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <label for="file-input" class="cursor-pointer bg-gradient-to-r from-primary to-primary-container text-on-primary font-label-sm text-label-sm px-8 py-4 rounded-full shadow-[0_10px_30px_-10px_rgba(107,56,212,0.4)] hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_rgba(107,56,212,0.6)] transition-all duration-300 flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined">upload_file</span>
-                            Browse PDF
-                        </label>
-                        <button type="submit" id="generate-btn" disabled class="disabled:opacity-50 disabled:cursor-not-allowed bg-transparent border border-outline-variant text-primary font-label-sm text-label-sm px-8 py-4 rounded-full hover:bg-surface-container-low hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_rgba(107,56,212,0.2)] transition-all duration-300 flex items-center justify-center gap-2 glass-card">
-                            <span class="material-symbols-outlined">auto_awesome</span>
+            <section class="hero-section">
+                <div class="hero-badge">
+                    <span class="material-symbols-outlined" style="font-size:16px;">auto_awesome</span>
+                    AI-Powered Audiobook Generator
+                </div>
+                <h1 class="hero-title">
+                    Transform your PDFs into<br>
+                    <span class="hero-gradient">immersive audiobooks</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Upload any PDF document and let AI convert it into a high-quality audiobook
+                    with natural-sounding voices in multiple languages.
+                </p>
+            </section>
+
+            <!-- Upload Card -->
+            <section class="upload-section">
+                <div class="upload-card" id="drop-area">
+                    <div id="upload-content">
+                        <div class="upload-icon-wrap">
+                            <span class="material-symbols-outlined upload-icon">cloud_upload</span>
+                        </div>
+                        <h3 class="upload-title">Drag & drop your PDF here</h3>
+                        <p class="upload-hint" id="file-name">or click below to browse files (Max 50MB)</p>
+
+                        <input type="file" id="file-input" name="pdf_file" accept="application/pdf" hidden>
+
+                        <div class="upload-actions">
+                            <label for="file-input" class="btn btn-primary">
+                                <span class="material-symbols-outlined" style="font-size:18px;">folder_open</span>
+                                Browse Files
+                            </label>
+
+                            <div class="lang-select-wrap">
+                                <select id="language-select" name="lang" class="lang-select">
+                                    <option value="en">🇺🇸 English</option>
+                                    <option value="ml">🇮🇳 Malayalam</option>
+                                    <option value="hi">🇮🇳 Hindi</option>
+                                    <option value="ta">🇮🇳 Tamil</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="generate-btn" disabled class="btn btn-generate">
+                            <span class="material-symbols-outlined" style="font-size:18px;">auto_awesome</span>
                             Generate Audiobook
                         </button>
                     </div>
-                </div>
-            </section>
 
-            <!-- Upload Section -->
-            <section class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop -mt-16 relative z-20 pb-32">
-                <div class="relative group rounded-xl">
-                    <div class="animated-border-glow"></div>
-                    
-                    <div id="drop-area" class="glass-card rounded-xl p-12 text-center border-2 border-dashed border-primary-fixed-dim hover:border-primary transition-colors relative overflow-hidden glass-shimmer">
-                        
-                        <div id="upload-content">
-                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-primary-fixed/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                            
-                            <span class="material-symbols-outlined text-display-lg text-primary mb-4 group-hover:text-surface-tint transition-colors duration-500 animate-icon-pulse inline-block">cloud_upload</span>
-                            <h3 class="font-headline-md text-headline-md mb-2 relative z-10">Drag &amp; Drop your PDF</h3>
-                            <p class="font-body-md text-body-md text-on-surface-variant relative z-10" id="file-name">or click Browse above (Max 50MB)</p>
-                            
-                            <!-- Hidden File Input -->
-                            <input type="file" id="file-input" name="pdf_file" accept="application/pdf" hidden>
-
-                            <!-- Language Select -->
-                            <div class="mt-6 flex justify-center relative z-10">
-                                <div class="relative">
-                                    <select id="language-select" name="lang" class="appearance-none bg-white/50 border border-outline-variant/50 text-on-surface text-label-sm font-label-sm py-2 pl-4 pr-10 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow shadow-sm hover:shadow-md cursor-pointer">
-                                        <option value="en">English Voice</option>
-                                        <option value="ml">Malayalam Voice</option>
-                                        <option value="hi">Hindi Voice</option>
-                                        <option value="ta">Tamil Voice</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-primary">
-                                        <span class="material-symbols-outlined text-[18px]">language</span>
-                                    </div>
-                                </div>
+                    <!-- Processing State -->
+                    <div id="status-section" class="status-section hidden">
+                        <div class="loader-ring">
+                            <div class="loader-ring-inner"></div>
+                        </div>
+                        <h4 id="status-title" class="status-title">Processing document...</h4>
+                        <p id="status-message" class="status-message">Extracting text and analyzing your PDF</p>
+                        <div class="status-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
                             </div>
                         </div>
-
-                        <!-- Progress Bar / Processing State (Hidden by default) -->
-                        <div id="status-section" class="mt-8 hidden relative z-10">
-                            <div class="w-full bg-surface-variant rounded-full h-2 overflow-hidden">
-                                <div class="bg-primary h-2 rounded-full w-3/4 animate-pulse-glow"></div>
+                        <div class="status-stats">
+                            <div class="stat-chip">
+                                <span class="material-symbols-outlined" style="font-size:16px;">description</span>
+                                <span id="stat-pages">-</span> pages
                             </div>
-                            <h4 id="status-title" class="font-label-sm text-label-sm text-primary mt-4 text-lg">Processing document...</h4>
-                            <p id="status-message" class="text-on-surface-variant text-sm mt-1">Extracting text and analyzing</p>
-                            
-                            <!-- Stats display -->
-                            <div class="flex justify-center gap-6 mt-4 opacity-80">
-                                <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">description</span> <span id="stat-pages">-</span> pages</div>
-                                <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">text_snippet</span> <span id="stat-chars">-</span> chars</div>
-                            </div>
-
-                            <!-- Large file warning -->
-                            <div id="large-file-warning" class="hidden mt-4 bg-tertiary-fixed-dim/30 border border-tertiary text-on-tertiary-fixed text-sm p-3 rounded-lg flex items-start gap-2 text-left">
-                                <span class="material-symbols-outlined text-[20px] text-tertiary">warning</span>
-                                <span>Large document detected. Audio generation may take some time. Please leave this tab open.</span>
+                            <div class="stat-chip">
+                                <span class="material-symbols-outlined" style="font-size:16px;">text_snippet</span>
+                                <span id="stat-chars">-</span> chars
                             </div>
                         </div>
-                        
+                        <div id="large-file-warning" class="warning-banner hidden">
+                            <span class="material-symbols-outlined" style="font-size:18px;">warning</span>
+                            <span>Large document detected. This may take a few minutes.</span>
+                        </div>
                     </div>
                 </div>
             </section>
         </form>
+
+        <!-- Features Row -->
+        <section class="features-row">
+            <div class="feature-card">
+                <div class="feature-icon-wrap">
+                    <span class="material-symbols-outlined">description</span>
+                </div>
+                <h4>Smart Extraction</h4>
+                <p>Advanced text extraction handles any PDF layout</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-wrap">
+                    <span class="material-symbols-outlined">record_voice_over</span>
+                </div>
+                <h4>Natural Voices</h4>
+                <p>AI-powered speech synthesis in multiple languages</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-wrap">
+                    <span class="material-symbols-outlined">download</span>
+                </div>
+                <h4>Instant Download</h4>
+                <p>Get your MP3 audiobook ready to play anywhere</p>
+            </div>
+        </section>
     </main>
-    
+
     <!-- Footer -->
-    <footer class="bg-surface-container-lowest w-full py-12 bg-gradient-to-t from-surface-container-low/50 to-transparent flat opacity-100 hover:opacity-80 transition-opacity mt-auto">
-        <div class="flex justify-center items-center max-w-container-max mx-auto px-margin-desktop gap-8">
-            <div class="font-headline-md text-headline-md font-bold text-on-surface">
-                Readify AI
-            </div>
-            <div class="font-body-md text-body-md text-on-surface-variant/80">
-                © 2026 Readify AI. All rights reserved.
-            </div>
+    <footer class="footer">
+        <div class="footer-inner">
+            <span class="footer-brand">Readify AI</span>
+            <span class="footer-copy">© 2026 All rights reserved.</span>
         </div>
     </footer>
 
