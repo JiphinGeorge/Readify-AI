@@ -1,228 +1,140 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Audiobook Player - Readify AI</title>
-    <script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "primary-fixed": "#e9ddff",
-                      "surface-tint": "#6d3bd7",
-                      "background": "#f7f9fb",
-                      "surface-container-low": "#f2f4f6",
-                      "tertiary-fixed-dim": "#ffb783",
-                      "on-primary": "#ffffff",
-                      "secondary": "#006591",
-                      "on-secondary-fixed-variant": "#004c6e",
-                      "surface-dim": "#d8dadc",
-                      "on-tertiary-container": "#fffbff",
-                      "on-primary-fixed-variant": "#5516be",
-                      "on-tertiary-fixed": "#301400",
-                      "error-container": "#ffdad6",
-                      "on-error": "#ffffff",
-                      "surface": "#f7f9fb",
-                      "surface-container-lowest": "#ffffff",
-                      "primary-container": "#8455ef",
-                      "on-background": "#191c1e",
-                      "on-error-container": "#93000a",
-                      "surface-container": "#eceef0",
-                      "error": "#ba1a1a",
-                      "on-primary-fixed": "#23005c",
-                      "on-secondary": "#ffffff",
-                      "on-primary-container": "#fffbff",
-                      "tertiary-container": "#b55d00",
-                      "outline-variant": "#cbc3d7",
-                      "surface-container-high": "#e6e8ea",
-                      "primary-fixed-dim": "#d0bcff",
-                      "on-tertiary": "#ffffff",
-                      "on-secondary-container": "#004666",
-                      "on-tertiary-fixed-variant": "#713700",
-                      "inverse-on-surface": "#eff1f3",
-                      "on-secondary-fixed": "#001e2f",
-                      "tertiary-fixed": "#ffdcc5",
-                      "surface-variant": "#e0e3e5",
-                      "outline": "#7b7486",
-                      "secondary-fixed": "#c9e6ff",
-                      "on-surface-variant": "#494454",
-                      "secondary-container": "#39b8fd",
-                      "inverse-surface": "#2d3133",
-                      "secondary-fixed-dim": "#89ceff",
-                      "primary": "#6b38d4",
-                      "surface-container-highest": "#e0e3e5",
-                      "tertiary": "#904800",
-                      "on-surface": "#191c1e",
-                      "inverse-primary": "#d0bcff",
-                      "surface-bright": "#f7f9fb"
-              },
-              "borderRadius": {
-                      "DEFAULT": "1rem",
-                      "lg": "2rem",
-                      "xl": "3rem",
-                      "full": "9999px"
-              },
-              "spacing": {
-                      "container-max": "1200px",
-                      "base": "8px",
-                      "margin-mobile": "16px",
-                      "gutter": "24px",
-                      "margin-desktop": "40px"
-              },
-              "fontFamily": {
-                      "headline-md": ["Plus Jakarta Sans"],
-                      "label-sm": ["Inter"],
-                      "display-lg-mobile": ["Plus Jakarta Sans"],
-                      "body-lg": ["Plus Jakarta Sans"],
-                      "display-lg": ["Plus Jakarta Sans"],
-                      "body-md": ["Plus Jakarta Sans"]
-              },
-              "fontSize": {
-                      "label-sm": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
-                      "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                      "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
-              }
-            }
-          }
-        }
-    </script>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <!-- Custom CSS -->
+    <title>{{ job.original_filename }} — Readify AI Player</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
 </head>
-<body class="bg-background text-on-background min-h-screen flex flex-col relative overflow-x-hidden font-body-md">
-    
-    <!-- Error Alert (Hidden) -->
-    <div id="error-alert" class="hidden fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] bg-error-container text-on-error-container px-6 py-3 rounded-full shadow-lg flex items-center gap-3 transition-opacity">
-        <span class="material-symbols-outlined text-[20px]">error</span>
-        <span id="error-message" class="font-label-sm">Failed to load audio.</span>
-        <button id="close-error" class="ml-2 hover:opacity-70"><span class="material-symbols-outlined text-[16px]">close</span></button>
-    </div>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
 
-    <!-- Hidden audio element for logic binding -->
+    <!-- Hidden audio element -->
     <audio id="native-audio" src="{{ job.audio_url }}" preload="auto"></audio>
 
-    <!-- Background Blobs -->
-    <div class="bg-blob w-96 h-96 bg-[#e9ddff] top-[10%] left-[10%]" style="animation: float-1 20s infinite ease-in-out;"></div>
-    <div class="bg-blob w-[35rem] h-[35rem] bg-[#c9e6ff] bottom-[-10%] right-[-5%]" style="animation: float-2 25s infinite ease-in-out; animation-delay: -5s;"></div>
-    <div class="bg-blob w-[25rem] h-[25rem] bg-[#ffdcc5] top-[40%] left-[40%]" style="animation: float-3 22s infinite ease-in-out; animation-delay: -10s;"></div>
-    
-    <!-- Particles Container -->
-    <div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden" id="particles-container"></div>
-    
-    <!-- Main Navigation Content Canvas -->
-    <header class="w-full sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-[0_10px_30px_-10px_rgba(139,92,246,0.15)] flex justify-between items-center h-16 px-margin-mobile md:px-margin-desktop transition-all">
-        <div class="flex items-center gap-4">
-            <a href="/" class="p-2 rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant flex items-center justify-center">
-                <span class="material-symbols-outlined">arrow_back</span>
-            </a>
-            <div class="flex flex-col">
-                <span class="font-display-lg-mobile text-display-lg-mobile font-bold bg-clip-text text-transparent bg-gradient-to-r from-secondary-container to-primary hidden md:block">Readify AI</span>
-                <span class="font-headline-md text-headline-md font-bold bg-clip-text text-transparent bg-gradient-to-r from-secondary-container to-primary md:hidden">Readify AI</span>
-                <span class="font-label-sm text-label-sm text-on-surface-variant">Your audiobook is ready</span>
+    <!-- Error Alert -->
+    <div id="error-alert" class="error-alert hidden">
+        <span class="material-symbols-outlined" style="font-size:18px;">error</span>
+        <span id="error-message">Failed to load audio.</span>
+        <button id="close-error" class="error-close"><span class="material-symbols-outlined" style="font-size:16px;">close</span></button>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <a href="/" class="back-btn">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </a>
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Readify AI" class="nav-logo">
+                <div class="nav-text">
+                    <span class="nav-title">Readify AI</span>
+                    <span class="nav-subtitle">Your audiobook is ready</span>
+                </div>
             </div>
         </div>
-    </header>
-    
-    <main class="flex-grow flex flex-col items-center justify-center p-margin-mobile md:p-margin-desktop gap-8 z-10 w-full max-w-container-max mx-auto">
+    </nav>
+
+    <main class="player-main">
         <!-- Player Card -->
-        <div class="glass-card w-full max-w-4xl rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center md:items-stretch transition-transform duration-300 hover:-translate-y-2 hover:shadow-[0_20px_50px_-10px_rgba(107,56,212,0.3)]">
-            <!-- Cover Art Mock -->
-            <div class="w-48 h-64 md:w-64 md:h-auto flex-shrink-0 rounded-lg overflow-hidden relative shadow-lg group bg-gradient-to-br from-primary-fixed to-secondary-fixed flex items-center justify-center">
-                <span class="material-symbols-outlined text-[80px] text-primary/40 group-hover:scale-110 transition-transform duration-500">menu_book</span>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                    <span class="text-white font-label-sm text-label-sm">PDF Source</span>
-                </div>
-            </div>
-            
-            <!-- Player Controls -->
-            <div class="flex flex-col flex-grow justify-between w-full">
-                <div class="text-center md:text-left mb-6">
-                    <h1 class="font-headline-md text-headline-md text-on-surface mb-2 truncate max-w-sm" title="{{ job.original_filename }}">{{ job.original_filename }}</h1>
-                    <div class="flex items-center justify-center md:justify-start gap-3 text-on-surface-variant font-label-sm text-label-sm">
-                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">description</span> {{ job.pages }} pages</span>
-                        <span>•</span>
-                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">language</span> {{ job.lang | upper }}</span>
+        <div class="player-card">
+            <div class="player-layout">
+                <!-- Cover Art -->
+                <div class="cover-art">
+                    <img src="{{ url_for('static', filename='img/cover.png') }}" alt="Cover" class="cover-img">
+                    <div class="cover-overlay">
+                        <span class="material-symbols-outlined" style="font-size:40px;color:#fff;">headphones</span>
                     </div>
                 </div>
-                
-                <!-- Waveform Visualizer Mock -->
-                <div class="w-full h-16 flex items-end justify-between gap-1 mb-6 opacity-80" id="waveform">
-                    <!-- Javascript will populate this -->
-                </div>
-                
-                <!-- Seek Bar -->
-                <div class="w-full mb-6">
-                    <input class="seek-slider" id="progress-bar" max="100" min="0" step="0.1" type="range" value="0"/>
-                    <div class="flex justify-between mt-2 font-label-sm text-label-sm text-on-surface-variant">
-                        <span id="current-time">0:00</span>
-                        <span id="total-time">0:00</span>
+
+                <!-- Player Body -->
+                <div class="player-body">
+                    <!-- Track Info -->
+                    <div class="track-info">
+                        <h1 class="track-title" title="{{ job.original_filename }}">{{ job.original_filename }}</h1>
+                        <div class="track-meta">
+                            <span class="meta-chip"><span class="material-symbols-outlined" style="font-size:14px;">description</span> {{ job.pages }} pages</span>
+                            <span class="meta-dot">•</span>
+                            <span class="meta-chip"><span class="material-symbols-outlined" style="font-size:14px;">language</span> {{ job.lang | upper }}</span>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Controls -->
-                <div class="flex items-center justify-between w-full">
-                    <button id="mute-btn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-variant/50">
-                        <span class="material-symbols-outlined" id="volume-icon">volume_up</span>
-                    </button>
-                    
-                    <div class="flex items-center gap-4">
-                        <button id="rewind-btn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-variant/50 hover:scale-110 active:scale-95">
-                            <span class="material-symbols-outlined text-[28px]">replay_10</span>
-                        </button>
-                        <button id="play-pause-btn" class="flex items-center justify-center hover:scale-105 active:scale-95 transition-all" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#39b8fd,#6b38d4);color:#fff;border:none;cursor:pointer;animation:play-pulse 2s infinite;flex-shrink:0;">
-                            <span class="material-symbols-outlined" id="play-icon" style="font-size:36px;font-variation-settings:'FILL' 1;color:#fff;">play_arrow</span>
-                        </button>
-                        <button id="forward-btn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-variant/50 hover:scale-110 active:scale-95">
-                            <span class="material-symbols-outlined text-[28px]">forward_10</span>
-                        </button>
+
+                    <!-- Waveform -->
+                    <div class="waveform" id="waveform"></div>
+
+                    <!-- Seek Bar -->
+                    <div class="seek-wrap">
+                        <input class="seek-slider" id="progress-bar" max="100" min="0" step="0.1" type="range" value="0"/>
+                        <div class="time-display">
+                            <span id="current-time">0:00</span>
+                            <span id="total-time">0:00</span>
+                        </div>
                     </div>
-                    
-                    <button id="speed-btn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-lg font-label-sm text-label-sm border border-outline-variant/30 hover:border-primary/50 bg-surface/50 hover:bg-surface-container-low">
-                        1.0x
-                    </button>
+
+                    <!-- Controls -->
+                    <div class="controls-row">
+                        <button id="mute-btn" class="ctrl-btn" title="Mute">
+                            <span class="material-symbols-outlined" id="volume-icon">volume_up</span>
+                        </button>
+
+                        <div class="controls-center">
+                            <button id="rewind-btn" class="ctrl-btn" title="Rewind 10s">
+                                <span class="material-symbols-outlined" style="font-size:28px;">replay_10</span>
+                            </button>
+                            <button id="play-pause-btn" class="play-btn" title="Play">
+                                <span class="material-symbols-outlined play-icon" id="play-icon">play_arrow</span>
+                            </button>
+                            <button id="forward-btn" class="ctrl-btn" title="Forward 10s">
+                                <span class="material-symbols-outlined" style="font-size:28px;">forward_10</span>
+                            </button>
+                        </div>
+
+                        <button id="speed-btn" class="speed-btn" title="Playback Speed">1.0x</button>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Action Buttons Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
-            <a href="/download/{{ job.audio_filename }}" class="glass-card rounded-lg p-4 flex flex-col items-center justify-center gap-2 hover:bg-white/80 transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_10px_20px_-5px_rgba(107,56,212,0.2)]">
-                <span class="material-symbols-outlined text-primary group-hover:scale-125 transition-transform duration-300">download</span>
-                <span class="font-label-sm text-label-sm text-on-surface">Download MP3</span>
+
+        <!-- Action Buttons -->
+        <div class="actions-row">
+            <a href="/download/{{ job.audio_filename }}" class="action-card">
+                <span class="material-symbols-outlined action-icon" style="color:#7C3AED;">download</span>
+                <span class="action-label">Download MP3</span>
             </a>
-            <a href="/" class="glass-card rounded-lg p-4 flex flex-col items-center justify-center gap-2 hover:bg-white/80 transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_10px_20px_-5px_rgba(107,56,212,0.2)]">
-                <span class="material-symbols-outlined text-secondary-container group-hover:scale-125 group-hover:-rotate-90 transition-transform duration-300">autorenew</span>
-                <span class="font-label-sm text-label-sm text-on-surface">Generate Again</span>
+            <a href="/" class="action-card">
+                <span class="material-symbols-outlined action-icon" style="color:#06B6D4;">autorenew</span>
+                <span class="action-label">Generate Again</span>
             </a>
-            <a href="/" class="glass-card rounded-lg p-4 flex flex-col items-center justify-center gap-2 hover:bg-white/80 transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_10px_20px_-5px_rgba(107,56,212,0.2)]">
-                <span class="material-symbols-outlined text-tertiary-fixed-dim group-hover:scale-125 transition-transform duration-300">upload_file</span>
-                <span class="font-label-sm text-label-sm text-on-surface">Upload New PDF</span>
+            <a href="/" class="action-card">
+                <span class="material-symbols-outlined action-icon" style="color:#EC4899;">upload_file</span>
+                <span class="action-label">Upload New PDF</span>
             </a>
         </div>
-        
+
         <!-- Info Badges -->
-        <div class="flex flex-wrap justify-center gap-4 mt-4">
-            <div class="glass-card rounded-full px-4 py-2 flex items-center gap-2 hover:shadow-md transition-shadow">
-                <span class="material-symbols-outlined text-[16px] text-primary">text_snippet</span>
-                <span class="font-label-sm text-label-sm text-on-surface-variant"><span id="char-val">{{ job.char_count }}</span> Characters</span>
+        <div class="info-badges">
+            <div class="info-badge">
+                <span class="material-symbols-outlined" style="font-size:14px;color:#7C3AED;">text_snippet</span>
+                <span id="char-val">{{ job.char_count }}</span> Characters
             </div>
-            <div class="glass-card rounded-full px-4 py-2 flex items-center gap-2 hover:shadow-md transition-shadow">
-                <span class="material-symbols-outlined text-[16px] text-outline">calendar_today</span>
-                <span class="font-label-sm text-label-sm text-on-surface-variant">Generated {{ job.created_date }}</span>
+            <div class="info-badge">
+                <span class="material-symbols-outlined" style="font-size:14px;color:#06B6D4;">calendar_today</span>
+                Generated {{ job.created_date }}
             </div>
         </div>
     </main>
-    
-    <footer class="w-full py-8 mt-auto bg-surface-container-lowest/50 backdrop-blur-md border-t border-outline-variant/20 flex flex-col md:flex-row justify-center items-center gap-4 px-margin-mobile md:px-margin-desktop z-10 relative">
-        <span class="text-on-surface font-bold font-label-sm text-label-sm">© 2026 Readify AI. All rights reserved.</span>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span class="footer-brand">Readify AI</span>
+            <span class="footer-copy">© 2026 All rights reserved.</span>
+        </div>
     </footer>
 
     <script src="{{ url_for('static', filename='js/player.js') }}"></script>
